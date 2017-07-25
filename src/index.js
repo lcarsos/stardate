@@ -32,6 +32,15 @@ class Stardate extends Component {
     this.setState({ stardate: this.calcStardate() });
   }
 
+  genLowerStardate(stardate, digits) {
+    return stardate.toString().match(new RegExp(`\\d+.\\d{${digits}}`))[0].padStart(5, '0');
+  }
+
+  genTimeIndex(stardate) {
+    // doing stupid nonsense so I have access to the length of a string without creating a variable
+    return ((ti) => ti.substring(ti.length-3))(Math.floor(stardate * 10000).toString());
+  }
+
   render() {
     return (
       <div style={{
@@ -41,8 +50,8 @@ class Stardate extends Component {
           textTransform: 'uppercase',
         }}
       >
-        {this.year_str}{this.state.stardate.toFixed(1).toString().padStart(5, '0')}<br />
-        time index: {(this.state.stardate * 10000).toFixed().toString().padStart(8, '0').substring(5)}
+        {this.year_str}{this.genLowerStardate(this.state.stardate, 1)}<br />
+        time index: {this.genTimeIndex(this.state.stardate)}
       </div>
     );
   }
